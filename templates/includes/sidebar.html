@@ -1,0 +1,25 @@
+		<!-- Sidebar -->
+		<div class="sidebar sidebar-style-2" data-background-color="dark2">			
+			<div class="sidebar-wrapper scrollbar scrollbar-inner">
+				<div class="sidebar-content">
+
+						<ul class="nav nav-primary">
+							<li class='nav-item {% if request.endpoint == "base_app.home" %} active {% else %} has-treeview {% endif %}'>
+								<a href="/home" class="nav-link">
+								  <i class="nav-icon fas fa-home"></i>
+								  <p>Àrea de trabalho</p>
+								</a>
+							  </li>
+							  <li class='nav-item {% if request.endpoint == "base_app.settings" %} active {% else %} has-treeview {% endif %}'>
+								<a href="/settings" class="nav-link">
+								  <i class="nav-icon fas fa-cogs"></i>
+								  <p>Configurações</p>
+								</a>
+							  </li>  
+						</ul>										
+
+				</div>
+			</div>
+		</div>
+        <!-- End Sidebar -->
+        

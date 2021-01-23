@@ -1,0 +1,163 @@
+{% extends "layouts/base.html" %}
+
+{% block title %} Configurações {% endblock %} 
+
+{% block stylesheets %}{% endblock stylesheets %}
+
+{% block content %}
+
+<div class="content">
+    <div class="page-inner">
+        <div class="row">
+          <div class="col-md-12">
+            <div class="card">
+                <div class="card-header">
+                  <h3 class="card-title"><i class="fas fa-user"></i> Login do Instagram</h3>
+                </div>
+                <!-- /.card-header -->
+                <!-- form start -->
+                <form role="role" method="POST">
+                  <div class="card-body">
+                    <label>Usuário</label>
+                    <div class="input-group mb-3">
+                      <div class="input-group-prepend">
+                        <span class="input-group-text"><i class="fas fa-user"></i></span>
+                      </div>
+                      <input type="user" class="form-control" name="username" placeholder="Usuário" {% if username != None %} value="{{username}}" {% endif %}  required>
+                    </div>
+                    <label>Senha</label>
+                    <div class="input-group mb-3">
+                      <div class="input-group-prepend">
+                        <span class="input-group-text"><i class="fas fa-lock"></i></span>
+                      </div>
+                      <input type="password" class="form-control" name="password" placeholder="Senha" {% if password != None %} value="{{password}}" {% endif %} required>
+                    </div>
+                  </div>
+                  <div class="card-footer">
+                    <button type="submit" class="btn btn-round btn-info">Salvar</button>
+                  </div>
+                  </form>
+              </div>
+          </div>
+          <div class="col-md-12">
+            <div class="card">
+                <div class="card-header">
+                  <h3 class="card-title"><i class="fas fa-cog"></i> Configurações</h3>
+                </div>
+                <!-- /.card-header -->
+                <!-- form start -->
+                <form role="role" method="POST" name='userlogin'>
+                  <div class="card-body">
+                    <label>Perfil inicial</label>
+                    <div class="input-group mb-3">
+                      <div class="input-group-prepend">
+                        <span class="input-group-text"><i class="fas fa-user"></i></span>
+                      </div>
+                      <input class="form-control" name="usersearch" placeholder="Usuário" {% if usersearch != None %} value="{{usersearch}}" {% endif %} required>
+                    </div>
+                    <label>Palavras chave no Usuário</label> 
+                    <div class="input-group mb-3">
+                      <div class="input-group-prepend">
+                        <span class="input-group-text"><i class="fas fa-key"></i></span>
+                      </div>
+                      <input class="form-control" name="userkeywords" placeholder="Exemplo: dr, tr, pl..." {% if userkeywords != None %} value="{{userkeywords}}" {% endif %}>
+                    </div>
+                    <label>Palavras chave no Nome</label>
+                    <div class="input-group mb-3">
+                      <div class="input-group-prepend">
+                        <span class="input-group-text"><i class="fas fa-key"></i></span>
+                      </div>
+                      <input class="form-control" name="namekeywords" placeholder="Exemplo: Doutor, Mestre, Trader..." {% if namekeywords != None %} value="{{namekeywords}}" {% endif %}>
+                    </div>
+                    <label>Palavras chave na Biografia</label>
+                    <div class="input-group mb-3">
+                      <div class="input-group-prepend">
+                        <span class="input-group-text"><i class="fas fa-key"></i></span>
+                      </div>
+                      <input class="form-control" name="biokeywords" placeholder="Exemplo: doctor, trader, businessman..." {% if biokeywords != None %} value="{{biokeywords}}" {% endif %}>
+                    </div>
+                    <label>Idiomas</label>
+                    <div class="input-group mb-3">
+                      <div class="input-group-prepend">
+                        <span class="input-group-text"><i class="fas fa-key"></i></span>
+                      </div>
+                      <input class="form-control" name='langkeywords' placeholder="Exemplo: pt, en, fr..." {% if langkeywords != None %} value="{{langkeywords}}" {% endif %}>
+                    </div>
+                    <label for="categories">Categorias</label>
+                    <div class="form-group">
+                      <select multiple class="form-control" name="categories">
+                        {% for item in categories %}
+                        <option>{{ item }}</option>
+                        {% endfor %}
+                      </select>
+                    </div>
+                  </div>
+                  <div class="card-footer">
+                    <button type="submit" class="btn btn-round btn-info">Salvar</button>
+                  </div>
+                  </form>
+              </div>
+          </div>
+          <div class="col-md-12">
+            <div class="card">
+                <div class="card-header">
+                  <h3 class="card-title"><i class="fas fa-key"></i> Gerenciar Métodos</h3>
+                </div>
+                <!-- /.card-header -->
+                <!-- form start -->
+                <form role="role" method="POST">
+                  <div class="card-body">
+                    <div class="form-check">
+                      <label class="form-check-label">
+                        <input class="form-check-input" type="checkbox" name='checkuser' required>
+                        <span class="form-check-sign" style='color:white;'>Pesquisa via Usuário</span>
+                      </label>
+                    </div>
+                    <div class="form-check">
+                      <label class="form-check-label">
+                        <input class="form-check-input" type="checkbox" name='checkname' required>
+                        <span class="form-check-sign" style='color:white;'>Pesquisa via Nome</span>
+                      </label>
+                    </div>
+                    <div class="form-check">
+                      <label class="form-check-label">
+                        <input class="form-check-input" type="checkbox" name='checkbio' required>
+                        <span class="form-check-sign" style='color:white;'>Pesquisa via Biografia</span>
+                      </label>
+                    </div>
+                    <div class="form-check">
+                      <label class="form-check-label">
+                        <input class="form-check-input" type="checkbox" name='checklang' required>
+                        <span class="form-check-sign" style='color:white;'>Checagem de Idioma</span>
+                      </label>
+                    </div>
+                    <div class="form-check">
+                      <label class="form-check-label">
+                        <input class="form-check-input" type="checkbox" name='checkcategories' required>
+                        <span class="form-check-sign" style='color:white;'>Checagem de Categoria</span>
+                      </label>
+                    </div>
+                  </div>
+                  <div class="card-footer">
+                    <button type="submit" class="btn btn-round btn-info">Salvar</button>
+                  </div>
+                  </form>
+              </div>
+          </div>
+        </div>
+    </div>
+  
+</div>
+
+<script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+<script type=text/javascript>
+jQuery(function ($) {
+    var $inputs = $('input[name=checkuser],input[name=checkname], input[name=checkbio], input[name=checklang], input[name=checkcategories]');
+    $inputs.on('input', function () {
+        $inputs.not(this).prop('required', !$(this).val().length);
+    });
+});
+
+</script>
+
+{% endblock content %}
