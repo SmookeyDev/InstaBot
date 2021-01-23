@@ -38,8 +38,16 @@ def settings():
                     catlist.append(i)
                 db.set('categories', str(catlist)[1 : -1])
         else:
-            print(request.form)
-
+            if request.form.get('checkuser') != None:
+                db.set('checkuser', request.form.get('checkuser'))
+            if request.form.get('checkname') != None:
+                db.set('checkname', request.form.get('checkname'))
+            if request.form.get('checkbio') != None:
+                db.set('checkbio', request.form.get('checkbio'))
+            if request.form.get('checklang') != None:
+                db.set('checklang', request.form.get('checklang'))
+            if request.form.get('checkcategories') != None:
+                db.set('checkcategories', request.form.get('checkcategories'))
 
 
     lista = []
