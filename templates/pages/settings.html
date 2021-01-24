@@ -109,32 +109,32 @@
                   <div class="card-body">
                     <div class="form-check">
                       <label class="form-check-label">
-                        <input class="form-check-input" type="checkbox" name='checkuser' required>
+                        <input class="form-check-input" type="checkbox" id='checkuser' name='checkuser' required {{ cuser }}>
                         <span class="form-check-sign" style='color:white;'>Pesquisa via Usuário</span>
                       </label>
                     </div>
                     <div class="form-check">
                       <label class="form-check-label">
-                        <input class="form-check-input" type="checkbox" name='checkname' required>
+                        <input class="form-check-input" type="checkbox" id='checkname' name='checkname' required {{ cname }}>
                         <span class="form-check-sign" style='color:white;'>Pesquisa via Nome</span>
                       </label>
                     </div>
                     <div class="form-check">
                       <label class="form-check-label">
-                        <input class="form-check-input" type="checkbox" name='checkbio' required>
+                        <input class="form-check-input" type="checkbox" id='checkbio' value='oi' name='checkbio' required {{ cbio }}>
                         <span class="form-check-sign" style='color:white;'>Pesquisa via Biografia</span>
                       </label>
                     </div>
                     <div class="form-check">
                       <label class="form-check-label">
-                        <input class="form-check-input" type="checkbox" name='checklang' required>
+                        <input class="form-check-input" type="checkbox" id='checklang' name='checklang' {{ clang }}>
                         <span class="form-check-sign" style='color:white;'>Checagem de Idioma</span>
                       </label>
                     </div>
                     <div class="form-check">
                       <label class="form-check-label">
-                        <input class="form-check-input" type="checkbox" name='checkcategories' required>
-                        <span class="form-check-sign" style='color:white;'>Checagem de Categoria</span>
+                        <input class="form-check-input" type="checkbox" id='checkcategories' name='checkcategories' {{ ccategories }}>
+                        <span class="form-check-sign" style='color:white;' >Checagem de Categoria</span>
                       </label>
                     </div>
                   </div>
@@ -152,10 +152,17 @@
 <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
 <script type=text/javascript>
 jQuery(function ($) {
-    var $inputs = $('input[name=checkuser],input[name=checkname], input[name=checkbio], input[name=checklang], input[name=checkcategories]');
+    var $inputs = $('input[name=checkuser],input[name=checkname], input[name=checkbio]');
     $inputs.on('input', function () {
         $inputs.not(this).prop('required', !$(this).val().length);
     });
+
+    var $boxes = $('input[name=checkuser],input[name=checkname], input[name=checkbio], input[name=checklang], input[name=checkcategories]');
+  $boxes.change(function(){
+      cb = $(this);
+      cb.val(cb.prop('checked'));
+  });
+
 });
 
 </script>

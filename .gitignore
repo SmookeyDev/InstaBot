@@ -1,2 +1,6 @@
-__pycache__/
+config/*
 data.db
+instabot/__pycache__/
+instabot/bot/__pycache__/
+instabot/bot/state/__pycache__/
+instabot/api/__pycache__/

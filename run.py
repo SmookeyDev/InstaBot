@@ -1,6 +1,6 @@
 import os
 from flask import Flask, redirect, url_for, request, render_template
-from db import Sql
+from includes.db import Sql
 
 db = Sql()
 
@@ -13,7 +13,11 @@ def route_default():
 
 @app.route('/home', methods=['GET', 'POST'])
 def home():
-    return render_template('pages/index.html', checked=0, saved=0)
+    if db.get('checked') == None:
+        db.set('checked', str(0))
+    if db.get('saved') == None:
+        db.set('saved', str(0))
+    return render_template('pages/index.html', checked=db.get('checked'), saved=db.get('saved'))
 
 @app.route('/settings', methods=['GET', 'POST'])
 def settings():
@@ -22,44 +26,54 @@ def settings():
             db.set('username', request.form.get('username'))
             db.set('password', request.form.get('password'))
         elif request.form.get('usersearch'):
-            if request.form.get('usersearch') != None:
-                db.set('usersearch', request.form.get('usersearch'))
-            if request.form.get('userkeywords') != None:
-                db.set('userkeywords', request.form.get('userkeywords'))
-            if request.form.get('namekeywords') != None:
-                db.set('namekeywords', request.form.get('namekeywords'))
-            if request.form.get('biokeywords') != None:
-                db.set('biokeywords', request.form.get('biokeywords'))
-            if request.form.get('langkeywords') != None:
-                db.set('langkeywords', request.form.get('langkeywords'))
-            if request.form.get('categories'):
-                catlist = []
-                for i in request.form.getlist('categories'):
-                    catlist.append(i)
-                db.set('categories', str(catlist)[1 : -1])
-        else:
-            if request.form.get('checkuser') != None:
-                db.set('checkuser', request.form.get('checkuser'))
-            if request.form.get('checkname') != None:
-                db.set('checkname', request.form.get('checkname'))
-            if request.form.get('checkbio') != None:
-                db.set('checkbio', request.form.get('checkbio'))
-            if request.form.get('checklang') != None:
-                db.set('checklang', request.form.get('checklang'))
-            if request.form.get('checkcategories') != None:
-                db.set('checkcategories', request.form.get('checkcategories'))
+            form = request.form
+            for i in form:
+                if form.get(i) != "":
+                    db.set(i, form.get(i))
+                else:
+                    db.set(i, '')
+                if form.get('categories'):
+                    catlist = []
+                    for i in request.form.getlist('categories'):
+                        catlist.append(i)
+                    db.set('categories', str(catlist)[1 : -1])
+                    continue
 
+        else:
+            if request.form.get('checkuser'):
+                db.set('checkuser', 'on')
+            else:
+                db.set('checkuser', 'off')
+            if request.form.get('checkname'):
+                db.set('checkname', 'on')
+            else:
+                db.set('checkname', 'off')
+            if request.form.get('checkbio'):
+                db.set('checkbio', 'on')
+            else:
+                db.set('checkbio', 'off')
+            if request.form.get('checklang'):
+                db.set('checklang', 'on')
+            else:
+                db.set('checklang', 'off')
+            if request.form.get('checkcategories'):
+                db.set('checkcategories', 'on')
+            else:
+                db.set('checkcategories', 'off')
 
     lista = []
-    categories = open('categories.txt', 'r')
+    categories = open('./includes/categories.txt', 'r')
     for line in categories.readlines():
         lista.append(line.strip())
-    return render_template('pages/settings.html', username=db.get('username'), password=db.get('password'), usersearch=db.get('usersearch'), userkeywords=db.get('userkeywords'), namekeywords=db.get('namekeywords'), biokeywords=db.get('biokeywords'), langkeywords=db.get('langkeywords'), categories=lista)
+    return render_template('pages/settings.html', username=db.get('username'), password=db.get('password'), usersearch=db.get('usersearch'), userkeywords=db.get('userkeywords'), namekeywords=db.get('namekeywords'), biokeywords=db.get('biokeywords'), langkeywords=db.get('langkeywords'), categories=lista, cuser=verify(db.get('checkuser')), cname=verify(db.get('checkname')), cbio=verify(db.get('checkbio')), clang=verify(db.get('checklang')), ccategories=verify(db.get('checkcategories')))
 
-@app.route('/teste', methods=['GET', 'POST'])
-def teste():
-    return render_template('all/ui-forms.html', checked=0, saved=0)
 
+
+def verify(value):
+    if value != "on":
+        return ''
+    else:
+        return 'checked'
 
 
 if __name__ == '__main__':
