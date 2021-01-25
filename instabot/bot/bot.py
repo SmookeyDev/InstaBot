@@ -479,7 +479,6 @@ class Bot(object):
         for key, val in self.blocked_actions.items():
             if val:
                 self.logger.info("Blocked {}".format(key))
-        self.logger.info("Total requests: {}".format(self.api.total_requests))
 
     def delay(self, key):
         """
