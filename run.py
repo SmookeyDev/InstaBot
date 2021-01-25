@@ -26,7 +26,7 @@ print("""  ________             _____       ________      _____
 """)
 print( f' - Developer:', colored('@xSmookeyBR', 'blue'))
 print(' -', colored('InstaBot iniciado, os resultados serão mostrados nessa tela.', 'green'))
-print(" =================================================================")
+print(" =================================================================\n")
 
 
 @app.route('/')
