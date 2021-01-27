@@ -4,29 +4,18 @@ from includes.db import Sql
 from includes.utils import utils
 import logging
 from termcolor import colored
+import bot
+import threading
+import sqlite3
+import pandas as pd
 
 db = Sql()
 utils = utils()
 
 app = Flask(__name__)
 
-##VARIABLES
-botprocess = "off"
-
-##starting system
-log = logging.getLogger('werkzeug')
-log.setLevel(logging.ERROR)
-os.system('cls' if os.name == 'nt' else 'clear')
-print("""  ________             _____       ________      _____ 
-  ____  _/_______________  /______ ___  __ )_______  /_
-  __  / __  __ \_  ___/  __/  __ `/_  __  |  __ \  __/
-  __/ /  _  / / /(__  )/ /_ / /_/ /_  /_/ // /_/ / /_  
-  /___/  /_/ /_//____/ \__/ \__,_/ /_____/ \____/\__/
-                                              
-""")
-print( f' - Developer:', colored('@xSmookeyBR', 'blue'))
-print(' -', colored('InstaBot iniciado, os resultados serão mostrados nessa tela.', 'green'))
-print(" =================================================================\n")
+##Start system
+utils.start()
 
 
 @app.route('/')
@@ -41,7 +30,7 @@ def counter():
 
 @app.route('/startbutton')
 def startbutton():
-    if utils.botprocess == 'on':
+    if db.get('botprocess') == 'on':
         buttonname = "Desligar InstaBot"
         buttonclass = "btn btn-danger btn-round"
     else:
@@ -51,24 +40,67 @@ def startbutton():
 
 @app.route('/startbot')
 def startbot():
-    utils.botprocess = 'on'
+    db.set('botprocess', 'on')
+    if db.get('resetbot') == '':
+        db.set('resetbot', '0')
+    utils.start()
+    with open('./includes/usernames.txt', 'a') as arq:
+        user = db.get('usersearch')
+        if user not in open('./includes/usernames.txt', 'r').read():
+            arq.write('{}\n'.format(user))
+    s = threading.Thread(target=bot.processbot)
+    s.start()
     return 'ok', 200
 
 
 @app.route('/stopbot')
 def stopbot():
-    utils.botprocess = 'off'
+    db.set('botprocess', 'off')
+    with open("./includes/usernames.txt",'r') as f:
+        with open("./includes/empty-dontdelete.txt",'w') as f1:
+            f.next()
+            for line in f:
+                f1.write(line)
+    return 'ok', 200
+
+@app.route('/buttondelete')
+def buttondelete():
+    db.set('botprocess', 'off')
+    if db.get('resetbot') == '':
+        db.set('resetbot', '0')
+    else:
+        db.set('resetbot', '{}'.format(int(db.get('resetbot')) + 1))
+    db.set('checked', '0')
+    db.set('saved', '0')
+    db.set('approved', '0')
+    db.set('row', '0')
+    try:
+        os.remove('./includes/usernames.txt')
+    except:
+        pass
+    conn = sqlite3.connect('excel.db')
+    conne = conn.cursor()
+    df = pd.read_sql('SELECT * FROM SAVED', conn)
+    df.to_csv('saved-{}.csv'.format(db.get('resetbot')))
+
+    df = pd.read_sql('SELECT * FROM APPROVED', conn)
+    df.to_csv('approved-{}.csv'.format(db.get('resetbot')))
+    conne.execute('DELETE FROM SAVED')
+    conn.commit()
+    conne.execute('DELETE FROM APPROVED')
+    conn.commit()
+
     return 'ok', 200
 
 
 @app.route('/home', methods=['GET', 'POST'])
 def home():
-    if request.method == 'POST':
-        print(request.form)
-    if db.get('checked') == None:
-        db.set('checked', str(0))
-    if db.get('saved') == None:
-        db.set('saved', str(0))
+    if db.get('checked') == '':
+        db.set('checked', '0')
+    if db.get('saved') == '':
+        db.set('saved', '0')
+    if db.get('approved') == '':
+        db.set('approved', '0')
     return render_template('pages/index.html', checked=db.get('checked'), saved=db.get('saved'), approved=db.get('approved'))
 
 @app.route('/settings', methods=['GET', 'POST'])
@@ -131,6 +163,6 @@ def verify(value):
     else:
         return 'checked'
 
-
 if __name__ == '__main__':
+    db.set('botprocess', 'off')
     app.run(host='127.0.0.1', port='3000', debug=True)

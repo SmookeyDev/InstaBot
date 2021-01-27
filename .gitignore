@@ -1,11 +1,5 @@
-config/
-data.db
-instabot/__pycache__/
-instabot/bot/__pycache__/
-instabot/bot/state/__pycache__/
-instabot/api/__pycache__/
-followers.txt
-data.db
-config/icaroparanhos_.checkpoint
+approved-15.csv
+saved-15.csv
+excel.db
 .gitignore
-config/icaroparanhos__uuid_and_cookie.json
+data.db

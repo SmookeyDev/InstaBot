@@ -13,6 +13,7 @@
 				<div class="d-flex align-items-left align-items-md-center flex-column flex-md-row">
 					<div class="ml-md-auto py-2 py-md-0">
 						<form role="form" method="POST">
+							<button type="button" onclick='buttondelete()' class="btn btn-danger btn-round" id='deletebutton' name='deletebutton'>Resetar Estatísticas</button>
 							<button type="button" onclick='startbutton()' class="btn btn-info btn-round" id='startbot' name='startbot'>Carregando...</button>
 						</form> 
 					</div>
@@ -110,6 +111,12 @@ const button = document.getElementById('startbot');
 
 		if (button.className === 'btn btn-danger btn-round'){
 			$.get("http://127.0.0.1:3000/stopbot");}
+   }
+
+   function buttondelete(){
+		if (document.getElementById('deletebutton').id == 'deletebutton'){
+				$.get("http://127.0.0.1:3000/buttondelete");
+			}
    }
 
 </script>

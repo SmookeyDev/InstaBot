@@ -1,5 +1,4 @@
 import time
-import redis
 import sqlite3
 from threading import Lock
 
@@ -176,5 +175,66 @@ class Sql:
                 return True
             else:
                 return False
+        finally:
+            lock.release()
+
+class Sql2:
+    def __init__(self):
+        try:
+            lock.acquire(True)
+            self.conn = sqlite3.connect("excel.db", check_same_thread = False)
+            self.conne = self.conn.cursor()
+            self.conn.execute('''CREATE TABLE IF NOT EXISTS APPROVED
+            (ID INTEGER PRIMARY KEY AUTOINCREMENT     NOT NULL,
+            NAME           TEXT    NOT NULL,
+            USERNAME           TEXT    NOT NULL,
+            EMAIL           TEXT    NOT NULL);''')
+            self.conn.execute('''CREATE TABLE IF NOT EXISTS SAVED
+            (ID INTEGER PRIMARY KEY AUTOINCREMENT     NOT NULL,
+            NAME           TEXT    NOT NULL,
+            USERNAME           TEXT    NOT NULL,
+            EMAIL           TEXT    NOT NULL,
+            MEDIACOUNT           TEXT    NOT NULL,
+            CONTACTPHONE           TEXT    NOT NULL,
+            CATEGORY           TEXT    NOT NULL);''')
+        finally:
+            lock.release()
+
+    def aset(self, jsonx):
+        username = jsonx['username']
+        name = jsonx['full_name']
+        email = jsonx['public_email']
+        try:
+            lock.acquire(True)
+            self.conne.execute("SELECT * FROM APPROVED WHERE USERNAME = ?", [username])
+            if self.conne.fetchone() is not None:
+                self.conn.execute("UPDATE APPROVED SET NAME = ?, USERNAME = ?, EMAIL = ? WHERE USERNAME = ?", [name, username, email, username])
+                self.conn.commit()
+                return "updated"
+            else:
+                self.conn.execute('INSERT INTO APPROVED (ID, NAME, USERNAME, EMAIL) VALUES (NULL, ?, ?, ?)', [name, username, email])
+                self.conn.commit()
+                return "registered"
+        finally:
+            lock.release()
+
+    def sset(self, jsonx):
+        username = jsonx['username']
+        name = jsonx['full_name']
+        email = jsonx['public_email']
+        mediacount = jsonx['media_count']
+        contactphone = jsonx['contact_phone_number']
+        category = jsonx['category']
+        try:
+            lock.acquire(True)
+            self.conne.execute("SELECT * FROM SAVED WHERE USERNAME = ?", [username])
+            if self.conne.fetchone() is not None:
+                self.conn.execute("UPDATE SAVED SET NAME = ?, USERNAME = ?, EMAIL = ?, MEDIACOUNT = ?, CONTACTPHONE = ?, CATEGORY = ? WHERE USERNAME = ?", [name, username, email, mediacount, contactphone, category, username])
+                self.conn.commit()
+                return "updated"
+            else:
+                self.conn.execute('INSERT INTO SAVED (ID, NAME, USERNAME, EMAIL, MEDIACOUNT, CONTACTPHONE, CATEGORY) VALUES (NULL, ?, ?, ?, ?, ?, ?)', [name, username, email, mediacount, contactphone, category])
+                self.conn.commit()
+                return "registered"
         finally:
             lock.release()

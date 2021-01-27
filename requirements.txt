@@ -1,0 +1,7 @@
+termcolor
+logging
+flask
+openpyxl
+textblob
+instabot
+pandas
