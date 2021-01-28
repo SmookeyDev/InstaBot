@@ -16,6 +16,6 @@ class utils:
     /___/  /_/ /_//____/ \__/ \__,_/ /_____/ \____/\__/
                                                     
         """)
-        print( f' - Developer:', colored('@xSmookeyBR', 'blue'))
+        print(' - Developer:', colored('@xSmookeyBR', 'blue'))
         print(' -', colored('InstaBot iniciado, os resultados serão mostrados nessa tela.', 'green'))
         print(" =================================================================\n")

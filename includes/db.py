@@ -223,8 +223,14 @@ class Sql2:
         name = jsonx['full_name']
         email = jsonx['public_email']
         mediacount = jsonx['media_count']
-        contactphone = jsonx['contact_phone_number']
-        category = jsonx['category']
+        if jsonx['contact_phone_number'] is None:
+            contactphone = "" 
+        else:
+            contactphone = jsonx['contact_phone_number']
+        if jsonx['category'] is None:
+            category = ""
+        else:
+            category = jsonx['category']
         try:
             lock.acquire(True)
             self.conne.execute("SELECT * FROM SAVED WHERE USERNAME = ?", [username])
