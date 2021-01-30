@@ -248,19 +248,12 @@ def get_user_followers_username(self, user_id, nfollows):
     user_id = self.convert_to_user_id(user_id)
     followers = self.api.get_total_followers(user_id, nfollows)
     result = [str(item["username"]) for item in followers][::-1] if followers else []
-    for item in followers:
-        with open('./includes/usernames.txt', 'a') as arq:
-            arq.write('{}\n'.format(item['username']))
-
     return result
 
 
 def get_user_following_username(self, user_id, nfollows=None):
     user_id = self.convert_to_user_id(user_id)
     following = self.api.get_total_followings(user_id, nfollows)
-    for item in following:
-        with open('./includes/usernames.txt', 'a') as arq:
-            arq.write('{}\n'.format(item['username']))
     return [str(item["username"]) for item in following][::-1] if following else []
 
 def get_comment_likers(self, comment_id):

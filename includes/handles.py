@@ -76,9 +76,10 @@ class hands:
                 
                 infosresult = json.dumps(infosadd)
                 result =  json.loads(infosresult)
-
                 db2.sset(user_info)
-
+                
+                with open('./includes/usernames.txt', 'a') as arq:
+                    arq.write('{}\n'.format(user_info['username']))
                 count = int(db.get('saved')) + 1
                 db.set('saved', count)
 

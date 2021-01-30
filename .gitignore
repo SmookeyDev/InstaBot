@@ -8,3 +8,13 @@ approved-26.csv
 .gitignore
 includes/usernames.txt
 saved-26.csv
+approved-27.csv
+.gitignore
+.gitignore
+instabot/bot/__pycache__/bot_get.cpython-39.pyc
+includes/__pycache__/handles.cpython-39.pyc
+config/log/instabot_2651021771536.log
+config/log/instabot_2005784199952.log
+config/icaroparanhos__uuid_and_cookie.json
+saved-27.csv
+data.db
